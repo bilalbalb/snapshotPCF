@@ -17,7 +17,7 @@ namespace snapshotPCF.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            
+
             return new string[] { "value1", "value2" };
         }
 
@@ -33,8 +33,7 @@ namespace snapshotPCF.Controllers
         }
 
         // POST api/values
-        [HttpPost]
-        [Route("post")]
+        [HttpPost("{value}")]
         public object Post([FromBody]string value)
         {
             if (value == "New")

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace snapshotPCF.Controllers
 {
@@ -33,8 +34,21 @@ namespace snapshotPCF.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        [Route("post")]
+        public object Post([FromBody]string value)
         {
+            if (value == "New")
+            {
+                _telemetryClient.TrackAvailability("Post api", DateTimeOffset.Now, TimeSpan.MaxValue, "test1", true);
+                return Ok($"{value}, was passed , { DateTime.Now}");
+            }
+
+            else
+            {
+                EventTelemetry eventTelmetry = new EventTelemetry();
+                _telemetryClient.TrackEvent(eventTelmetry);
+                return Unauthorized();
+            }
         }
 
         // PUT api/values/5
